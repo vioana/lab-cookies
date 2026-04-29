@@ -2,17 +2,55 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <script> 
+    <title>Lab 8-9 Managementul Datelor</title>
+    <script>
+        // Setați 2 cookies conform cerinței inițiale [cite: 15, 16]
         document.cookie = "session=test GDPR"; 
         document.cookie = "favorite_task=collect Data"; 
-        
+
         function alertCookie() { 
             alert(document.cookie); 
-        } 
+        }
+
+        // --- EXEMPLE MOZILLA MDN (Task 3 continuat) [cite: 21] ---
+
+        // Exemplu 1: Verificarea existenței unui cookie specific
+        function doCookieExists() {
+            if (document.cookie.split(";").some((item) => item.trim().startsWith("session="))) {
+                alert("Cookie-ul 'session' a fost găsit!");
+            } else {
+                alert("Cookie-ul nu există.");
+            }
+        }
+
+        // Exemplu 2: Ștergerea unui cookie (prin setarea datei de expirare în trecut)
+        function deleteCookie() {
+            document.cookie = "session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            alert("Cookie-ul 'session' a fost șters!");
+        }
+
+        // Exemplu 3: Afișarea lungimii șirului de cookies
+        function showCookieLength() {
+            alert("Lungimea totală a string-ului document.cookie: " + document.cookie.length);
+        }
     </script>
 </head>
 <body> 
-    Bine ai venit la lab 
-    <button onclick="alertCookie()">Show cookies</button> 
+    <h1>Managementul Datelor Personale - Lab 8-9</h1>
+    <p>Bine ai venit la lab [cite: 17]</p>
+    
+    <section>
+        <h3>Funcționalitate de bază:</h3>
+        <button onclick="alertCookie()">Show cookies</button> 
+    </section>
+
+    <hr>
+
+    <section>
+        <h3>Exerciții Mozilla MDN:</h3>
+        <button onclick="doCookieExists()">Verifică existență (MDN)</button>
+        <button onclick="showCookieLength()">Lungime Cookies (MDN)</button>
+        <button onclick="deleteCookie()">Șterge Cookie 'session' (MDN)</button>
+    </section>
 </body>
 </html>
