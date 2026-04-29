@@ -2,55 +2,110 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Lab 8-9 Managementul Datelor</title>
-    <script>
-        // Setați 2 cookies conform cerinței inițiale [cite: 15, 16]
-        document.cookie = "session=test GDPR"; 
-        document.cookie = "favorite_task=collect Data"; 
-
-        function alertCookie() { 
-            alert(document.cookie); 
-        }
-
-        // --- EXEMPLE MOZILLA MDN (Task 3 continuat) [cite: 21] ---
-
-        // Exemplu 1: Verificarea existenței unui cookie specific
-        function doCookieExists() {
-            if (document.cookie.split(";").some((item) => item.trim().startsWith("session="))) {
-                alert("Cookie-ul 'session' a fost găsit!");
-            } else {
-                alert("Cookie-ul nu există.");
-            }
-        }
-
-        // Exemplu 2: Ștergerea unui cookie (prin setarea datei de expirare în trecut)
-        function deleteCookie() {
-            document.cookie = "session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-            alert("Cookie-ul 'session' a fost șters!");
-        }
-
-        // Exemplu 3: Afișarea lungimii șirului de cookies
-        function showCookieLength() {
-            alert("Lungimea totală a string-ului document.cookie: " + document.cookie.length);
-        }
-    </script>
+    <title>Laborator Cookies</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; line-height: 1.6; }
+        button { margin: 5px; padding: 8px 15px; cursor: pointer; }
+        .box { border: 1px solid #ccc; padding: 15px; margin-top: 20px; background: #f9f9f9; }
+        code { background: #eee; padding: 2px 5px; font-weight: bold; }
+    </style>
 </head>
-<body> 
-    <h1>Managementul Datelor Personale - Lab 8-9</h1>
-    <p>Bine ai venit la lab [cite: 17]</p>
-    
-    <section>
-        <h3>Funcționalitate de bază:</h3>
-        <button onclick="alertCookie()">Show cookies</button> 
-    </section>
+<body>
 
-    <hr>
+    <h1>Managementul Datelor - Cookies</h1>
+    <p>Bine ai venit la lab. Testeaza functiile de mai jos bazate pe MDN.</p>
 
-    <section>
-        <h3>Exerciții Mozilla MDN:</h3>
-        <button onclick="doCookieExists()">Verifică existență (MDN)</button>
-        <button onclick="showCookieLength()">Lungime Cookies (MDN)</button>
-        <button onclick="deleteCookie()">Șterge Cookie 'session' (MDN)</button>
-    </section>
+    <div class="box">
+        <h3>Task Principal</h3>
+        <button onclick="alertCookie()">Show cookies (Original)</button>
+    </div>
+
+    <div class="box">
+        <h3>Exercitii Mozilla MDN</h3>
+        
+        <button id="show-all">Afiseaza toate (Ex 1)</button>
+        
+        <button id="get-test2">Gaseste 'test2' (Ex 2)</button>
+        
+        <button id="do-once">Executa o data (Ex 3)</button>
+        
+        <button id="reset-once">Reseteaza 'do-once' (Ex 4)</button>
+        
+        <button id="check-exists">Exista 'reader'? (Ex 5)</button>
+        
+        <button id="check-value">Are 'reader' valoarea 1? (Ex 6)</button>
+        
+        <button id="clear-display">Sterge textul de mai jos</button>
+    </div>
+
+    <div class="box">
+        <strong>Rezultat:</strong>
+        <p id="output">Apasati un buton pentru a vedea rezultatul...</p>
+    </div>
+
+    <script>
+        // Seteaza cookies de baza pentru task
+        document.cookie = "session=test GDPR; SameSite=Lax";
+        document.cookie = "favorite_task=collect Data; SameSite=Lax";
+        
+        // Seteaza cookies necesari pentru exemplele MDN
+        document.cookie = "test1=Hello; SameSite=Lax";
+        document.cookie = "test2=World; SameSite=Lax";
+        document.cookie = "reader=1; SameSite=Lax";
+
+        const output = document.getElementById("output");
+
+        // Functia originala
+        function alertCookie() {
+            alert(document.cookie);
+        }
+
+        // Exemplu 1: Show all
+        document.getElementById("show-all").addEventListener("click", () => {
+            output.textContent = "> " + document.cookie;
+        });
+
+        // Exemplu 2: Get sample cookie 'test2'
+        document.getElementById("get-test2").addEventListener("click", () => {
+            const val = document.cookie
+                .split("; ")
+                .find((row) => row.startsWith("test2="))
+                ?.split("=")[1];
+            output.textContent = "> Valoarea lui test2 este: " + val;
+        });
+
+        // Exemplu 3: Do something only once
+        document.getElementById("do-once").addEventListener("click", () => {
+            if (!document.cookie.split("; ").find((row) => row.startsWith("executat-o-data"))) {
+                document.cookie = "executat-o-data=true; expires=Fri, 31 Dec 9999 23:59:59 GMT; SameSite=Lax";
+                output.textContent = "> Aceasta actiune se intampla doar o data!";
+            } else {
+                output.textContent = "> Deja a fost executat. Trebuie resetat.";
+            }
+        });
+
+        // Exemplu 4: Reset the previous cookie
+        document.getElementById("reset-once").addEventListener("click", () => {
+            document.cookie = "executat-o-data=; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax";
+            output.textContent = "> Cookie-ul de executie a fost resetat!";
+        });
+
+        // Exemplu 5: Check cookie existence
+        document.getElementById("check-exists").addEventListener("click", () => {
+            const exista = document.cookie.split(";").some((item) => item.trim().startsWith("reader="));
+            output.textContent = exista ? "> Cookie-ul 'reader' exista." : "> Cookie-ul 'reader' NU exista.";
+        });
+
+        // Exemplu 6: Check specific value
+        document.getElementById("check-value").addEventListener("click", () => {
+            const areValoare = document.cookie.split(";").some((item) => item.includes("reader=1"));
+            output.textContent = areValoare ? "> Da, reader are valoarea 1." : "> Nu, reader are alta valoare.";
+        });
+
+        // Sterge display
+        document.getElementById("clear-display").addEventListener("click", () => {
+            output.textContent = "Apasati un buton...";
+        });
+    </script>
 </body>
 </html>
